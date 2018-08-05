@@ -19,6 +19,9 @@ namespace Paint
         int filas;
         int columnas;
 
+        int mouseX;
+        int mouseY;
+
         Pixel[,] pixeles;
 
         public Form1()
@@ -28,6 +31,9 @@ namespace Paint
             this.coordenadaInicioY = 0;
             this.anchoPixel = 30;
             this.altoPixel = 30;
+
+            this.mouseX = 0;
+            this.mouseY = 0;
 
             this.filas = panel1.Width;
             this.columnas = panel1.Height;
@@ -50,27 +56,27 @@ namespace Paint
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-
             dibujarCuadricula(e);
-         
         }
 
         private void panel1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             Point mouseDownLocation = new Point(e.X, e.Y);
 
+            Color colorFondo = Color.Yellow;
+
             double posicionX  = e.X / anchoPixel;
             double posicionY = e.Y / altoPixel;
 
-            int indiceX = Convert.ToInt32(Math.Floor(posicionX));
-            int indiceY = Convert.ToInt32(Math.Floor(posicionY));
+            mouseX = Convert.ToInt32(Math.Floor(posicionX));
+            mouseY = Convert.ToInt32(Math.Floor(posicionY));
 
-            MessageBox.Show("x: " + indiceX + " y: " + indiceY);
+            MessageBox.Show("Pixel en la posicion: " + mouseX + ", " + mouseY);
 
-           //pixeles[indiceX, indiceY].colorPixel(p);
-           
+            pixeles[mouseY, mouseX].setColorFondo(colorFondo);
+            //pixeles[indiceX, indiceY].colorearPixel();
+            panel1.Refresh();
         }
-
 
         public void dibujarCuadricula(PaintEventArgs e)
         {
@@ -129,9 +135,9 @@ namespace Paint
                 }
 
                 panel1.Refresh();
-            } else
-            {
-                MessageBox.Show("Superaste el tamaño mínimo de los pixeles");
+
+            } else {
+                MessageBox.Show("Superaste el tamaño mínimo de los pixeles :(", "¡Advertencia!");
             } 
         }
 

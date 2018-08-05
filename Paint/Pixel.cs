@@ -11,22 +11,33 @@ namespace Paint
     class Pixel
     {
         Point punto;
+
         Size tamaño;
+
         Rectangle rectangulo;
+
         Pen lapiz;
+
+        Color colorBorde;
+
+        SolidBrush pincel;
+
 
         public Pixel(int coordenadaX, int coordenadaY, int ancho, int alto)
         {
             this.punto = new Point(coordenadaX, coordenadaY);
             this.tamaño = new Size(ancho, alto);
             this.rectangulo = new Rectangle(punto, tamaño);
-            this.lapiz = new Pen(Color.Black, 2);
+            this.colorBorde = Color.Black;
+            this.lapiz = new Pen(colorBorde, 2);
+            this.pincel = new SolidBrush(Color.Beige);
         }
 
         public void dibujarPixel(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.DrawRectangle(lapiz, rectangulo);
+            g.FillRectangle(pincel, rectangulo);  
         }
 
         public Point getPunto()
@@ -54,10 +65,14 @@ namespace Paint
             this.rectangulo.Size = tamaño;
         }
 
-        public void colorPixel(PaintEventArgs e)
+        public void colorearPixel(PaintEventArgs e)
         {
-            SolidBrush blueBrush = new SolidBrush(Color.Blue);
-            e.Graphics.FillRectangle(blueBrush, rectangulo);
+            e.Graphics.FillRectangle(pincel, rectangulo);
+        }
+
+        public void setColorFondo(Color color)
+        {
+            this.pincel.Color = color;
         }
         
     }
