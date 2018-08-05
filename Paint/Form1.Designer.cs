@@ -30,12 +30,20 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnPintar = new System.Windows.Forms.Button();
+            this.btnDDA = new System.Windows.Forms.Button();
             this.btnMaximizar = new System.Windows.Forms.Button();
             this.btnMinizar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtX1 = new System.Windows.Forms.TextBox();
+            this.txtY1 = new System.Windows.Forms.TextBox();
+            this.txtY2 = new System.Windows.Forms.TextBox();
+            this.txtX2 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // panel1
@@ -47,15 +55,16 @@
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
-            // btnPintar
+            // btnDDA
             // 
-            this.btnPintar.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPintar.Location = new System.Drawing.Point(744, 326);
-            this.btnPintar.Name = "btnPintar";
-            this.btnPintar.Size = new System.Drawing.Size(177, 46);
-            this.btnPintar.TabIndex = 1;
-            this.btnPintar.Text = "DDA";
-            this.btnPintar.UseVisualStyleBackColor = true;
+            this.btnDDA.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDDA.Location = new System.Drawing.Point(744, 326);
+            this.btnDDA.Name = "btnDDA";
+            this.btnDDA.Size = new System.Drawing.Size(177, 46);
+            this.btnDDA.TabIndex = 1;
+            this.btnDDA.Text = "DDA";
+            this.btnDDA.UseVisualStyleBackColor = true;
+            this.btnDDA.Click += new System.EventHandler(this.btnDDA_Click);
             // 
             // btnMaximizar
             // 
@@ -108,17 +117,89 @@
             this.button1.Text = "Aun no definido ";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(706, 472);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(26, 17);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "x1:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(706, 499);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(27, 17);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "y1:";
+            // 
+            // txtX1
+            // 
+            this.txtX1.Location = new System.Drawing.Point(739, 472);
+            this.txtX1.Name = "txtX1";
+            this.txtX1.Size = new System.Drawing.Size(69, 22);
+            this.txtX1.TabIndex = 9;
+            // 
+            // txtY1
+            // 
+            this.txtY1.Location = new System.Drawing.Point(739, 500);
+            this.txtY1.Name = "txtY1";
+            this.txtY1.Size = new System.Drawing.Size(69, 22);
+            this.txtY1.TabIndex = 10;
+            // 
+            // txtY2
+            // 
+            this.txtY2.Location = new System.Drawing.Point(852, 500);
+            this.txtY2.Name = "txtY2";
+            this.txtY2.Size = new System.Drawing.Size(69, 22);
+            this.txtY2.TabIndex = 14;
+            // 
+            // txtX2
+            // 
+            this.txtX2.Location = new System.Drawing.Point(852, 472);
+            this.txtX2.Name = "txtX2";
+            this.txtX2.Size = new System.Drawing.Size(69, 22);
+            this.txtX2.TabIndex = 13;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(819, 499);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(27, 17);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "y2:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(819, 472);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(26, 17);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "x2:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1022, 633);
+            this.Controls.Add(this.txtY2);
+            this.Controls.Add(this.txtX2);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.txtY1);
+            this.Controls.Add(this.txtX1);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnMinizar);
             this.Controls.Add(this.btnMaximizar);
-            this.Controls.Add(this.btnPintar);
+            this.Controls.Add(this.btnDDA);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -132,12 +213,20 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnPintar;
+        private System.Windows.Forms.Button btnDDA;
         private System.Windows.Forms.Button btnMaximizar;
         private System.Windows.Forms.Button btnMinizar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtX1;
+        private System.Windows.Forms.TextBox txtY1;
+        private System.Windows.Forms.TextBox txtY2;
+        private System.Windows.Forms.TextBox txtX2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }
 

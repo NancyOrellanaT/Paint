@@ -18,9 +18,9 @@ namespace Paint
         int coordenadaInicioY;
         int filas;
         int columnas;
+        int contador;
 
-        int mouseX;
-        int mouseY;
+        Point [] puntos;
 
         Pixel[,] pixeles;
 
@@ -32,13 +32,16 @@ namespace Paint
             this.anchoPixel = 30;
             this.altoPixel = 30;
 
-            this.mouseX = 0;
-            this.mouseY = 0;
+            this.contador = 0;
 
             this.filas = panel1.Width;
             this.columnas = panel1.Height;
 
-            this.panel1.MouseClick += new MouseEventHandler(panel1_MouseDown);
+            this.puntos = new Point[2];
+
+            //this.panel1.MouseClick += new MouseEventHandler(panel1_MouseDown);
+
+            this.panel1.MouseClick += new MouseEventHandler(panel1_MouseDown1);
 
             pixeles = new Pixel[filas, columnas];
 
@@ -52,14 +55,15 @@ namespace Paint
                 coordenadaInicioX = 0;
                 coordenadaInicioY += altoPixel;
             }
-        } 
+        }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             dibujarCuadricula(e);
         }
 
-        private void panel1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        
+        /*private void panel1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             Point mouseDownLocation = new Point(e.X, e.Y);
 
@@ -68,15 +72,14 @@ namespace Paint
             double posicionX  = e.X / anchoPixel;
             double posicionY = e.Y / altoPixel;
 
-            mouseX = Convert.ToInt32(Math.Floor(posicionX));
-            mouseY = Convert.ToInt32(Math.Floor(posicionY));
-
-            MessageBox.Show("Pixel en la posicion: " + mouseX + ", " + mouseY);
+            int mouse1 = Convert.ToInt32(Math.Floor(posicionX));
+            int mouse2 = Convert.ToInt32(Math.Floor(posicionY));
 
             pixeles[mouseY, mouseX].setColorFondo(colorFondo);
             //pixeles[indiceX, indiceY].colorearPixel();
             panel1.Refresh();
-        }
+        }*/
+        
 
         public void dibujarCuadricula(PaintEventArgs e)
         {
@@ -98,7 +101,7 @@ namespace Paint
 
             for (int i = 0; i < filas; i++)
             {
-                for(int j = 0; j < columnas; j++)
+                for (int j = 0; j < columnas; j++)
                 {
                     pixeles[i, j].setTamaño(anchoPixel, altoPixel);
                     pixeles[i, j].setPunto(coordenadaInicioX, coordenadaInicioY);
@@ -118,9 +121,7 @@ namespace Paint
 
             coordenadaInicioY = 0;
 
-            coordenadaInicioY = 0;
-
-            if (altoPixel > 10 && anchoPixel > 10)
+            if (altoPixel > 5 && anchoPixel > 5)
             {
                 for (int i = 0; i < filas; i++)
                 {
@@ -136,9 +137,76 @@ namespace Paint
 
                 panel1.Refresh();
 
-            } else {
+            }
+            else
+            {
+                altoPixel = 10;
+                anchoPixel = 10;
                 MessageBox.Show("Superaste el tamaño mínimo de los pixeles :(", "¡Advertencia!");
-            } 
+            }
+        }
+
+        public void lineaDDA(int x1, int y1, int x2, int y2)
+        {
+
+            int dx = x2 - x1, dy = y2 - y1, pasos;
+            float xIncremento, yIncremento, x = x1, y = y1;
+
+            if (Math.Abs(dx) > Math.Abs(dy))
+            {
+                pasos = Math.Abs(dx);
+            }
+            else
+            {
+                pasos = Math.Abs(dy);
+            }
+
+            xIncremento = dx / (float)pasos;
+            yIncremento = dy / (float)pasos;
+
+            pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Color.Blue);
+
+            for (int k = 0; k < pasos; k++)
+            {
+                x += xIncremento;
+                y += yIncremento;
+                pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Color.Blue);
+            }
+
+        }
+
+        private void btnDDA_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Presiona click en el primer y último pixel de la línea que deseas realizar", "Algoritmo DDA");
+            //lineaDDA(Convert.ToInt32(txtX1.Text), Convert.ToInt32(txtY1.Text), Convert.ToInt32(txtX2.Text), Convert.ToInt32(txtY2.Text));
+            //panel1.Refresh();
+        }
+
+        private void panel1_MouseDown1(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            Point mouseDownLocation = new Point(e.X, e.Y);
+
+            double posicionX = e.X / anchoPixel;
+            double posicionY = e.Y / altoPixel;
+
+            int mouseX = Convert.ToInt32(Math.Floor(posicionX));
+            int mouseY = Convert.ToInt32(Math.Floor(posicionY));
+
+            if (contador < 2)
+            {
+                puntos[contador].X = mouseX;
+                puntos[contador].Y = mouseY;
+            }
+
+            contador++;
+
+            if (contador == 2)
+            {
+                lineaDDA(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
+                panel1.Refresh();
+                contador = 0;
+            }
+
         }
 
     }
