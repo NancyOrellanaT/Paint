@@ -164,20 +164,21 @@ namespace Paint
             xIncremento = dx / (float)pasos;
             yIncremento = dy / (float)pasos;
 
-            pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Color.Blue);
+            pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Color.SkyBlue);
 
             for (int k = 0; k < pasos; k++)
             {
                 x += xIncremento;
                 y += yIncremento;
-                pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Color.Blue);
+                pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Color.SkyBlue);
             }
 
         }
 
         private void btnDDA_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Presiona click en el primer y último pixel de la línea que deseas realizar", "Algoritmo DDA");
+            
+            //MessageBox.Show("Presiona click en el primer y último pixel de la línea que deseas realizar", "Algoritmo DDA");
             //lineaDDA(Convert.ToInt32(txtX1.Text), Convert.ToInt32(txtY1.Text), Convert.ToInt32(txtX2.Text), Convert.ToInt32(txtY2.Text));
             //panel1.Refresh();
         }
@@ -185,6 +186,10 @@ namespace Paint
         private void panel1_MouseDown1(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             Point mouseDownLocation = new Point(e.X, e.Y);
+
+            labelCoordenadaX.Text = Convert.ToString(e.X);
+            labelCoordenadaY.Text = Convert.ToString(e.Y);
+            
 
             double posicionX = e.X / anchoPixel;
             double posicionY = e.Y / altoPixel;
@@ -209,5 +214,17 @@ namespace Paint
 
         }
 
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < filas; i++)
+            {
+                for (int j = 0; j < columnas; j++)
+                {
+                    pixeles[i, j].setColorFondo(Color.White);
+                }
+            }
+
+            panel1.Refresh();
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace Paint
             this.rectangulo = new Rectangle(punto, tamaño);
             this.colorBorde = Color.Black;
             this.lapiz = new Pen(colorBorde, 2);
-            this.pincel = new SolidBrush(Color.Beige);
+            this.pincel = new SolidBrush(Color.White);
         }
 
         public void dibujarPixel(PaintEventArgs e)
@@ -65,10 +65,10 @@ namespace Paint
             this.rectangulo.Size = tamaño;
         }
 
-        public void colorearPixel(PaintEventArgs e)
+        /*public void colorearPixel(PaintEventArgs e)
         {
             e.Graphics.FillRectangle(pincel, rectangulo);
-        }
+        }*/
 
         public void setColorFondo(Color color)
         {
