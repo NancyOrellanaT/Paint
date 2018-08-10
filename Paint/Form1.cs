@@ -87,7 +87,7 @@ namespace Paint
                 if (contador == 1) {
                 txtX2.Text = Convert.ToString(puntos[2].X);
                 txtY2.Text = Convert.ToString(puntos[2].Y);
-            }
+                 }
                 //lienzo.LineaDDA(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
                 //lienzo.LineaBresenham(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
                 //panel1.Refresh();
@@ -104,6 +104,18 @@ namespace Paint
         private void btnBresemham_Click(object sender, EventArgs e)
         {
             lienzo.LineaBresenham(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
+            panel1.Refresh();
+        }
+
+        private void btnCirculo_Click(object sender, EventArgs e)
+        {
+            lienzo.Circulo(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
+            panel1.Refresh();
+        }
+
+        private void btnElipse_Click(object sender, EventArgs e)
+        {
+            lienzo.Elipse(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
             panel1.Refresh();
         }
 
@@ -159,10 +171,5 @@ namespace Paint
             Propiedades_Pixel.colorFondo = btnNegro.BackColor;
         }
 
-        private void btnCirculo_Click(object sender, EventArgs e)
-        {
-            lienzo.circulo(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
-            panel1.Refresh();
-        }
     }
 }

@@ -172,7 +172,7 @@ namespace Paint
             int x, y, xFinal;
 
             //Calculo de la pendiente
-            //double pendiente = (y2 -y1) / (x2 - x1);
+            double pendiente = (double)(y2 -y1) / (x2 - x1);
 
             if (x1 > x2)
             {
@@ -197,14 +197,22 @@ namespace Paint
                 }
                 else
                 {
-                    y++;
+                    if (pendiente < 0)
+                    {
+                        y--;
+                    }
+                    else
+                    {
+                        y++;
+                    }
+
                     p += dosDyDx;
                 }
                 pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
             }
         }
 
-        public void circulo(int xCentro, int yCentro, int xRadio, int yRadio)
+        public void Circulo(int xCentro, int yCentro, int xRadio, int yRadio)
         {
             int x = 0;
             double distancia = Math.Sqrt(Math.Pow((xRadio - xCentro),2) + Math.Pow((yRadio - yCentro),2));
@@ -212,7 +220,7 @@ namespace Paint
             int y = radio;
             int p = 1 - radio;
 
-            puntosCirculo(xCentro, yCentro, x, y);
+            PuntosCirculo(xCentro, yCentro, x, y);
 
          while (x < y)
             {
@@ -225,20 +233,159 @@ namespace Paint
                     y--;
                     p += 2 * (x - y) + 1;
                 }
-                puntosCirculo(xCentro, yCentro, x , y);
+                PuntosCirculo(xCentro, yCentro, x , y);
             }
         }
 
-        public void puntosCirculo(int xCentro, int yCentro, int x, int y)
+        public void PuntosCirculo(int xCentro, int yCentro, int x, int y)
         {
-            pixeles[yCentro + y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
-            pixeles[yCentro + y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
-            pixeles[yCentro - y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
-            pixeles[yCentro - y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
-            pixeles[yCentro + x, xCentro + y].setColorFondo(Propiedades_Pixel.colorFondo);
-            pixeles[yCentro + x, xCentro - y].setColorFondo(Propiedades_Pixel.colorFondo);
-            pixeles[yCentro - x, xCentro + y].setColorFondo(Propiedades_Pixel.colorFondo);
-            pixeles[yCentro - x, xCentro - y].setColorFondo(Propiedades_Pixel.colorFondo);
+            try
+            {
+                pixeles[yCentro + y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
+            } catch (Exception e)
+            {
+            }
+            try
+            {
+                pixeles[yCentro + y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
+            } catch(Exception e)
+            {
+            }
+            try
+            {
+                pixeles[yCentro - y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            catch (Exception e)
+            {
+            }
+            try
+            {
+                pixeles[yCentro - y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            catch (Exception e)
+            {
+            }
+            try
+            {
+                pixeles[yCentro + x, xCentro + y].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            catch (Exception e)
+            {
+            }
+            try
+            {
+                pixeles[yCentro + x, xCentro - y].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            catch (Exception e)
+            {
+            }
+            try
+            {
+                pixeles[yCentro - x, xCentro + y].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            catch (Exception e)
+            {
+            }
+            try
+            {
+                pixeles[yCentro - x, xCentro - y].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            catch (Exception e)
+            {
+
+            }               
+        }
+
+        public void Elipse(int xCentro, int yCentro, int rX, int rY) {
+            rX = rX / 2;
+            rY = rY / 2;
+
+            int rX2 = rX * rX;
+            int rY2 = rY * rY;
+            int dosRx2 = 2 * rX2;
+            int dosRy2 = 2 * rY2;
+            int p;
+            int x = 0;
+            int y = rY;
+            int px = 0;
+            int py = dosRx2 * y;
+
+            ElipsePuntos(xCentro, yCentro, x, y);
+
+            p = Convert.ToInt32(Math.Round(rY2 - (rX2 * rY) + (0.25 * rX2)));
+
+            //Region 1
+            while (px < py)
+            {
+                x++;
+                px += dosRy2;
+                if (p < 0)
+                {
+                    p += rY2 + px;
+                }
+                else
+                {
+                    y--;
+                    py -= dosRx2;
+                    p += rY2 + px - py;
+                }
+                ElipsePuntos(xCentro, yCentro, x, y);
+            }
+
+            //Region 2
+            p = Convert.ToInt32(Math.Round(rY2 * (x + 0.5) * (x + 0.5) + rX2 * (y - 1) * (y - 1) - rX2 * rY2));
+            while (y > 0)
+            {
+                y--;
+                py -= dosRx2;
+                if (p > 0)
+                {
+                    p += rX2 - py;
+                }
+                else
+                {
+                    x++;
+                    px += dosRy2;
+                    p += rX2 - py + px;
+                }
+                ElipsePuntos(xCentro, yCentro, x, y);
+            }
+        }
+
+        private void ElipsePuntos(int xCentro, int yCentro, int x, int y)
+        {
+            try
+            {
+                pixeles[yCentro + y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
+            } catch(Exception e)
+            {
+
+            }
+            try
+            {
+                pixeles[yCentro + y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            catch (Exception e)
+            {
+
+            }
+            try
+            {
+                pixeles[yCentro - y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            catch (Exception e)
+            {
+
+            }
+            try
+            {
+
+                pixeles[yCentro - y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 }
