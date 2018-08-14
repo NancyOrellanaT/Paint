@@ -64,6 +64,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.btnCirculo = new System.Windows.Forms.Button();
             this.btnElipse = new System.Windows.Forms.Button();
+            this.btnRellenar = new System.Windows.Forms.Button();
+            this.btnLimpiarCoordenadas = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panel1
@@ -258,7 +260,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(1000, 898);
+            this.label10.Location = new System.Drawing.Point(992, 810);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(18, 17);
             this.label10.TabIndex = 20;
@@ -267,7 +269,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(1115, 898);
+            this.label11.Location = new System.Drawing.Point(1107, 810);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(19, 17);
             this.label11.TabIndex = 22;
@@ -277,7 +279,7 @@
             // 
             this.labelCoordenadaX.AutoSize = true;
             this.labelCoordenadaX.BackColor = System.Drawing.Color.Transparent;
-            this.labelCoordenadaX.Location = new System.Drawing.Point(1025, 898);
+            this.labelCoordenadaX.Location = new System.Drawing.Point(1017, 810);
             this.labelCoordenadaX.Name = "labelCoordenadaX";
             this.labelCoordenadaX.Size = new System.Drawing.Size(0, 17);
             this.labelCoordenadaX.TabIndex = 23;
@@ -286,7 +288,7 @@
             // 
             this.labelCoordenadaY.AutoSize = true;
             this.labelCoordenadaY.BackColor = System.Drawing.Color.Transparent;
-            this.labelCoordenadaY.Location = new System.Drawing.Point(1140, 898);
+            this.labelCoordenadaY.Location = new System.Drawing.Point(1132, 810);
             this.labelCoordenadaY.Name = "labelCoordenadaY";
             this.labelCoordenadaY.Size = new System.Drawing.Size(0, 17);
             this.labelCoordenadaY.TabIndex = 24;
@@ -294,7 +296,7 @@
             // btnBresemham
             // 
             this.btnBresemham.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBresemham.Location = new System.Drawing.Point(962, 473);
+            this.btnBresemham.Location = new System.Drawing.Point(962, 460);
             this.btnBresemham.Name = "btnBresemham";
             this.btnBresemham.Size = new System.Drawing.Size(218, 46);
             this.btnBresemham.TabIndex = 25;
@@ -383,7 +385,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(926, 864);
+            this.label12.Location = new System.Drawing.Point(918, 776);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(100, 19);
             this.label12.TabIndex = 33;
@@ -392,7 +394,7 @@
             // btnCirculo
             // 
             this.btnCirculo.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCirculo.Location = new System.Drawing.Point(962, 540);
+            this.btnCirculo.Location = new System.Drawing.Point(962, 512);
             this.btnCirculo.Name = "btnCirculo";
             this.btnCirculo.Size = new System.Drawing.Size(218, 46);
             this.btnCirculo.TabIndex = 34;
@@ -403,13 +405,35 @@
             // btnElipse
             // 
             this.btnElipse.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnElipse.Location = new System.Drawing.Point(962, 605);
+            this.btnElipse.Location = new System.Drawing.Point(962, 564);
             this.btnElipse.Name = "btnElipse";
             this.btnElipse.Size = new System.Drawing.Size(218, 46);
             this.btnElipse.TabIndex = 35;
             this.btnElipse.Text = "Elipse";
             this.btnElipse.UseVisualStyleBackColor = true;
             this.btnElipse.Click += new System.EventHandler(this.btnElipse_Click);
+            // 
+            // btnRellenar
+            // 
+            this.btnRellenar.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRellenar.Location = new System.Drawing.Point(962, 616);
+            this.btnRellenar.Name = "btnRellenar";
+            this.btnRellenar.Size = new System.Drawing.Size(218, 46);
+            this.btnRellenar.TabIndex = 36;
+            this.btnRellenar.Text = "Rellenar";
+            this.btnRellenar.UseVisualStyleBackColor = true;
+            this.btnRellenar.Click += new System.EventHandler(this.btnRellenar_Click);
+            // 
+            // btnLimpiarCoordenadas
+            // 
+            this.btnLimpiarCoordenadas.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLimpiarCoordenadas.Location = new System.Drawing.Point(962, 668);
+            this.btnLimpiarCoordenadas.Name = "btnLimpiarCoordenadas";
+            this.btnLimpiarCoordenadas.Size = new System.Drawing.Size(218, 46);
+            this.btnLimpiarCoordenadas.TabIndex = 37;
+            this.btnLimpiarCoordenadas.Text = "Limpiar coordenadas";
+            this.btnLimpiarCoordenadas.UseVisualStyleBackColor = true;
+            this.btnLimpiarCoordenadas.Click += new System.EventHandler(this.btnLimpiarCoordenadas_Click);
             // 
             // Form1
             // 
@@ -418,6 +442,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(187)))), ((int)(((byte)(142)))));
             this.ClientSize = new System.Drawing.Size(1282, 953);
+            this.Controls.Add(this.btnLimpiarCoordenadas);
+            this.Controls.Add(this.btnRellenar);
             this.Controls.Add(this.btnElipse);
             this.Controls.Add(this.btnCirculo);
             this.Controls.Add(this.label12);
@@ -456,7 +482,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Paint";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -500,6 +525,8 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button btnCirculo;
         private System.Windows.Forms.Button btnElipse;
+        private System.Windows.Forms.Button btnRellenar;
+        private System.Windows.Forms.Button btnLimpiarCoordenadas;
     }
 }
 

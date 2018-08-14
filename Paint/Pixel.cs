@@ -29,8 +29,8 @@ namespace Paint
             this.tamaño = new Size(ancho, alto);
             this.rectangulo = new Rectangle(punto, tamaño);
             this.colorBorde = Color.Black;
-            this.lapiz = new Pen(Propiedades_Pixel.colorBorde, 2);
-            this.pincel = new SolidBrush(Color.White);
+            this.lapiz = new Pen(colorBorde, 2);
+            this.pincel = new SolidBrush(Propiedades_Pixel.colorFondo);
         }
 
         public void dibujarPixel(PaintEventArgs e)
@@ -80,5 +80,9 @@ namespace Paint
             return lapiz.Color;
         }
 
+        public Color getColorFondo()
+        {
+            return pincel.Color;
+        }
     }
 }

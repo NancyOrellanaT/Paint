@@ -54,7 +54,7 @@ namespace Paint
         private void panel1_MouseDown1(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             Point mouseDownLocation = new Point(e.X, e.Y);
-           
+
             double posicionX = e.X / Propiedades_Pixel.anchoPixel;
             double posicionY = e.Y / Propiedades_Pixel.altoPixel;
 
@@ -85,12 +85,10 @@ namespace Paint
             if (contador == 2)
             {
                 if (contador == 1) {
-                txtX2.Text = Convert.ToString(puntos[2].X);
-                txtY2.Text = Convert.ToString(puntos[2].Y);
+                    txtX2.Text = Convert.ToString(puntos[2].X);
+                    txtY2.Text = Convert.ToString(puntos[2].Y);
                  }
-                //lienzo.LineaDDA(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
-                //lienzo.LineaBresenham(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
-                //panel1.Refresh();
+
                 contador = 0;
             }
         }
@@ -128,6 +126,12 @@ namespace Paint
         private void BtnEncendidoApagado_Click(object sender, EventArgs e)
         {
             lienzo.EncendidoApagadoCuadricula();
+            panel1.Refresh();
+        }
+
+        private void btnRellenar_Click(object sender, EventArgs e)
+        {
+            lienzo.boundaryFill4(puntos[0].X, puntos[0].Y, Propiedades_Pixel.colorFondo, Color.Red);
             panel1.Refresh();
         }
 
@@ -171,5 +175,12 @@ namespace Paint
             Propiedades_Pixel.colorFondo = btnNegro.BackColor;
         }
 
+        private void btnLimpiarCoordenadas_Click(object sender, EventArgs e)
+        {
+            txtX1.Text = "";
+            txtY1.Text = "";
+            txtX2.Text = "";
+            txtY2.Text = "";
+        }
     }
 }

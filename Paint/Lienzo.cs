@@ -173,6 +173,8 @@ namespace Paint
 
             //Calculo de la pendiente
             double pendiente = (double)(y2 -y1) / (x2 - x1);
+            //MessageBox.Show("Pendiente: " + pendiente);
+
 
             if (x1 > x2)
             {
@@ -188,27 +190,44 @@ namespace Paint
             }
             pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
 
-            while (x < xFinal)
+            if (dx == 0)
             {
-                x++;
-                if (p < 0)
+                while (y > y2 || y < y2)
                 {
-                    p += dosDy;
-                }
-                else
-                {
-                    if (pendiente < 0)
-                    {
-                        y--;
-                    }
-                    else
+                    if ((y2 - y1) > 0)
                     {
                         y++;
                     }
-
-                    p += dosDyDx;
+                    else
+                    {
+                        y--;
+                    }
+                    pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
                 }
-                pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
+            }
+            else
+            {
+                while (x < xFinal)
+                {
+                    x++;
+                    if (p < 0)
+                    {
+                        p += dosDy;
+                    }
+                    else
+                    {
+                        if (pendiente < 0)
+                        {
+                            y--;
+                        }
+                        else
+                        {
+                            y++;
+                        }
+                        p += dosDyDx;
+                    }
+                    pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
+                }
             }
         }
 
@@ -386,6 +405,28 @@ namespace Paint
             {
 
             }
+        }
+
+        public void boundaryFill4(int x, int y, Color fill, Color boundary)
+        {
+            try {
+                Color current = pixeles[y, x].getColorFondo();
+               
+                if ((current != boundary) && (current != fill))
+                {
+                    Propiedades_Pixel.colorFondo = fill;
+                    pixeles[y, x].setColorFondo(fill);
+                    boundaryFill4(x + 1, y, fill, boundary);
+                    boundaryFill4(x - 1, y, fill, boundary);
+                    boundaryFill4(x, y + 1, fill, boundary);
+                    boundaryFill4(x, y - 1, fill, boundary);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            
         }
     }
 }
