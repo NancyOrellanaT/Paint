@@ -16,7 +16,7 @@ namespace Paint
         int columnas;
         int contador;
 
-        Point [] puntos;
+        Point[] puntos;
 
         Lienzo lienzo;
 
@@ -27,7 +27,7 @@ namespace Paint
             this.filas = panel1.Width;
             this.columnas = panel1.Height;
 
-            this.puntos = new Point[2];
+            this.puntos = new Point[3];
 
             this.lienzo = new Lienzo(filas, columnas);
 
@@ -64,7 +64,7 @@ namespace Paint
             int mouseX = Convert.ToInt32(Math.Floor(posicionX));
             int mouseY = Convert.ToInt32(Math.Floor(posicionY));
 
-            if (contador < 2)
+            if (contador < 3)
             {
                 puntos[contador].X = mouseX;
                 puntos[contador].Y = mouseY;
@@ -73,22 +73,23 @@ namespace Paint
                 {
                     txtX1.Text = Convert.ToString(puntos[0].X * Propiedades_Pixel.anchoPixel);
                     txtY1.Text = Convert.ToString(puntos[0].Y * Propiedades_Pixel.altoPixel);
-                } else
+                }
+                if (contador == 1)
                 {
                     txtX2.Text = Convert.ToString(puntos[1].X * Propiedades_Pixel.anchoPixel);
                     txtY2.Text = Convert.ToString(puntos[1].Y * Propiedades_Pixel.altoPixel);
+                }
+                else
+                {
+                    txtAncho.Text = Convert.ToString(puntos[2].X * Propiedades_Pixel.anchoPixel);
+                    txtAlto.Text = Convert.ToString(puntos[2].Y * Propiedades_Pixel.altoPixel);
                 }
             }
 
             contador++;
 
-            if (contador == 2)
+            if (contador == 3)
             {
-                if (contador == 1) {
-                    txtX2.Text = Convert.ToString(puntos[2].X);
-                    txtY2.Text = Convert.ToString(puntos[2].Y);
-                 }
-
                 contador = 0;
             }
         }
@@ -113,7 +114,14 @@ namespace Paint
 
         private void btnElipse_Click(object sender, EventArgs e)
         {
-            lienzo.Elipse(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
+            int dx1 = Math.Abs(Propiedades_Pixel.altoPixel * puntos[1].X - Propiedades_Pixel.anchoPixel * puntos[0].X);
+            int dx2 = Math.Abs(Propiedades_Pixel.altoPixel * puntos[2].X - Propiedades_Pixel.anchoPixel * puntos[0].X);
+            int dy1 = Math.Abs(Propiedades_Pixel.altoPixel * puntos[1].Y - Propiedades_Pixel.anchoPixel * puntos[0].Y);
+            int dy2 = Math.Abs(Propiedades_Pixel.altoPixel * puntos[2].Y - Propiedades_Pixel.anchoPixel * puntos[0].Y);
+            int ancho = (int) Math.Ceiling(Math.Sqrt(Math.Pow(dx1, 2) - Math.Pow(dy1, 2))) / 20;
+            int alto = (int) Math.Ceiling(Math.Sqrt(Math.Abs(Math.Pow(dx2, 2) - Math.Pow(dy2, 2)))) / 20;
+
+            lienzo.Elipse(puntos[0].X, puntos[0].Y, ancho, alto);
             panel1.Refresh();
         }
 
@@ -133,6 +141,11 @@ namespace Paint
         {
             lienzo.boundaryFill4(puntos[0].X, puntos[0].Y, Propiedades_Pixel.colorFondo, Color.Red);
             panel1.Refresh();
+        }
+
+        private void btnCafe_Click(object sender, EventArgs e)
+        {
+            Propiedades_Pixel.colorFondo = btnCafe.BackColor;
         }
 
         private void btnRojo_Click(object sender, EventArgs e)
@@ -160,6 +173,11 @@ namespace Paint
             Propiedades_Pixel.colorFondo = BtnCeleste.BackColor;
         }
 
+        private void btnRosa_Click(object sender, EventArgs e)
+        {
+            Propiedades_Pixel.colorFondo = btnRosa.BackColor;
+        }
+
         private void btnAmarillo_Click(object sender, EventArgs e)
         {
             Propiedades_Pixel.colorFondo = btnAmarillo.BackColor;
@@ -177,10 +195,21 @@ namespace Paint
 
         private void btnLimpiarCoordenadas_Click(object sender, EventArgs e)
         {
-            txtX1.Text = "";
-            txtY1.Text = "";
-            txtX2.Text = "";
-            txtY2.Text = "";
+            txtX1.Text = "0";
+            txtY1.Text = "0";
+            txtX2.Text = "0";
+            txtY2.Text = "0";
+            txtAncho.Text = "0";
+            txtAlto.Text = "0";
+
+            contador = 0;
+
+            for (int i = 0; i < puntos.Length; i++)
+            {
+                puntos[i].X = 0;
+                puntos[i].Y = 0;
+            }
+            
         }
     }
 }

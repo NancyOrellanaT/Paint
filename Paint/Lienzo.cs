@@ -58,6 +58,7 @@ namespace Paint
                 {
                     pixeles[i, j].setTamaño(Propiedades_Pixel.anchoPixel, Propiedades_Pixel.altoPixel);
                     pixeles[i, j].setPunto(Propiedades_Pixel.coordenadaInicioX, Propiedades_Pixel.coordenadaInicioY);
+                    pixeles[i, j].setTamañoBorde(Propiedades_Pixel.tamañoBorde);
                     pixeles[i, j].setColorBorde(Propiedades_Pixel.colorBorde);
                     Propiedades_Pixel.coordenadaInicioX += Propiedades_Pixel.anchoPixel;
                 }
@@ -82,6 +83,7 @@ namespace Paint
                     {
                         pixeles[i, j].setPunto(Propiedades_Pixel.coordenadaInicioX, Propiedades_Pixel.coordenadaInicioY);
                         pixeles[i, j].setTamaño(Propiedades_Pixel.anchoPixel, Propiedades_Pixel.altoPixel);
+                        pixeles[i, j].setTamañoBorde(Propiedades_Pixel.tamañoBorde);
                         pixeles[i, j].setColorBorde(Propiedades_Pixel.colorBorde);
                         Propiedades_Pixel.coordenadaInicioX += Propiedades_Pixel.anchoPixel;
                     }
@@ -111,13 +113,17 @@ namespace Paint
 
         public void EncendidoApagadoCuadricula()
         {
-            if (Propiedades_Pixel.colorBorde == Color.Black)
+
+            if (Propiedades_Pixel.tamañoBorde > 0)
             {
                 Propiedades_Pixel.colorBorde = Color.White;
+                Propiedades_Pixel.tamañoBorde = 0;
+
                 for (int i = 0; i < filas / Propiedades_Pixel.anchoPixel; i++)
                 {
                     for (int j = 0; j < columnas / Propiedades_Pixel.altoPixel; j++)
                     {
+                        pixeles[i, j].setTamañoBorde(Propiedades_Pixel.tamañoBorde);
                         pixeles[i, j].setColorBorde(Propiedades_Pixel.colorBorde);
                     }
                 }
@@ -125,10 +131,12 @@ namespace Paint
             else
             {
                 Propiedades_Pixel.colorBorde = Color.Black;
+                Propiedades_Pixel.tamañoBorde = 2;
                 for (int i = 0; i < filas / Propiedades_Pixel.anchoPixel; i++)
                 {
                     for (int j = 0; j < columnas / Propiedades_Pixel.altoPixel; j++)
                     {
+                        pixeles[i, j].setTamañoBorde(Propiedades_Pixel.tamañoBorde);
                         pixeles[i, j].setColorBorde(Propiedades_Pixel.colorBorde);
                     }
                 }
@@ -163,70 +171,38 @@ namespace Paint
             }
         }
 
-        public void LineaBresenham(int x1, int y1, int x2, int y2)
+        public void LineaBresenham(int x, int y, int x2, int y2)
         {
-            int dx = Math.Abs(x1 - x2);
-            int dy = Math.Abs(y1 - y2);
-            int p = 2 * dy - dx;
-            int dosDy = 2 * dy, dosDyDx = 2 * (dy - dx);
-            int x, y, xFinal;
-
-            //Calculo de la pendiente
-            double pendiente = (double)(y2 -y1) / (x2 - x1);
-            //MessageBox.Show("Pendiente: " + pendiente);
-
-
-            if (x1 > x2)
+            int w = x2 - x;
+            int h = y2 - y;
+            int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+            if (w < 0) dx1 = -1; else if (w > 0) dx1 = 1;
+            if (h < 0) dy1 = -1; else if (h > 0) dy1 = 1;
+            if (w < 0) dx2 = -1; else if (w > 0) dx2 = 1;
+            int longest = Math.Abs(w);
+            int shortest = Math.Abs(h);
+            if (!(longest > shortest))
             {
-                x = x2;
-                y = y2;
-                xFinal = x1;
+                longest = Math.Abs(h);
+                shortest = Math.Abs(w);
+                if (h < 0) dy2 = -1; else if (h > 0) dy2 = 1;
+                dx2 = 0;
             }
-            else
+            int numerator = longest >> 1;
+            for (int i = 0; i <= longest; i++)
             {
-                x = x1;
-                y = y1;
-                xFinal = x2;
-            }
-            pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
-
-            if (dx == 0)
-            {
-                while (y > y2 || y < y2)
+                pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
+                numerator += shortest;
+                if (!(numerator < longest))
                 {
-                    if ((y2 - y1) > 0)
-                    {
-                        y++;
-                    }
-                    else
-                    {
-                        y--;
-                    }
-                    pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
+                    numerator -= longest;
+                    x += dx1;
+                    y += dy1;
                 }
-            }
-            else
-            {
-                while (x < xFinal)
+                else
                 {
-                    x++;
-                    if (p < 0)
-                    {
-                        p += dosDy;
-                    }
-                    else
-                    {
-                        if (pendiente < 0)
-                        {
-                            y--;
-                        }
-                        else
-                        {
-                            y++;
-                        }
-                        p += dosDyDx;
-                    }
-                    pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
+                    x += dx2;
+                    y += dy2;
                 }
             }
         }
@@ -263,12 +239,14 @@ namespace Paint
                 pixeles[yCentro + y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
             } catch (Exception e)
             {
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
                 pixeles[yCentro + y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
             } catch(Exception e)
             {
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
@@ -276,6 +254,7 @@ namespace Paint
             }
             catch (Exception e)
             {
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
@@ -283,6 +262,7 @@ namespace Paint
             }
             catch (Exception e)
             {
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
@@ -290,6 +270,7 @@ namespace Paint
             }
             catch (Exception e)
             {
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
@@ -297,6 +278,7 @@ namespace Paint
             }
             catch (Exception e)
             {
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
@@ -304,6 +286,7 @@ namespace Paint
             }
             catch (Exception e)
             {
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
@@ -311,14 +294,13 @@ namespace Paint
             }
             catch (Exception e)
             {
+                Console.WriteLine("Indice fuera del rango");
 
             }               
         }
-
+    
         public void Elipse(int xCentro, int yCentro, int rX, int rY) {
-            rX = rX / 2;
-            rY = rY / 2;
-
+ 
             int rX2 = rX * rX;
             int rY2 = rY * rY;
             int dosRx2 = 2 * rX2;
@@ -348,6 +330,7 @@ namespace Paint
                     py -= dosRx2;
                     p += rY2 + px - py;
                 }
+                
                 ElipsePuntos(xCentro, yCentro, x, y);
             }
 
@@ -378,7 +361,7 @@ namespace Paint
                 pixeles[yCentro + y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
             } catch(Exception e)
             {
-
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
@@ -386,7 +369,7 @@ namespace Paint
             }
             catch (Exception e)
             {
-
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
@@ -394,16 +377,16 @@ namespace Paint
             }
             catch (Exception e)
             {
-
+                Console.WriteLine("Indice fuera del rango");
             }
             try
             {
-
+                Console.WriteLine("Indice fuera del rango");
                 pixeles[yCentro - y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
             }
             catch (Exception e)
             {
-
+                Console.WriteLine("Indice fuera del rango");
             }
         }
 
@@ -424,7 +407,7 @@ namespace Paint
             }
             catch (Exception e)
             {
-
+                
             }
             
         }

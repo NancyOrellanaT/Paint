@@ -22,14 +22,13 @@ namespace Paint
 
         SolidBrush pincel;
 
-
         public Pixel(int coordenadaX, int coordenadaY, int ancho, int alto)
         {
             this.punto = new Point(coordenadaX, coordenadaY);
             this.tamaño = new Size(ancho, alto);
             this.rectangulo = new Rectangle(punto, tamaño);
             this.colorBorde = Color.Black;
-            this.lapiz = new Pen(colorBorde, 2);
+            this.lapiz = new Pen(colorBorde, Propiedades_Pixel.tamañoBorde);
             this.pincel = new SolidBrush(Propiedades_Pixel.colorFondo);
         }
 
@@ -73,6 +72,11 @@ namespace Paint
         public void setColorBorde(Color color)
         {
             this.lapiz.Color = color; 
+        }
+
+        public void setTamañoBorde(int tamaño)
+        {
+            this.lapiz.Width = tamaño;
         }
 
         public Color getColorBorde()

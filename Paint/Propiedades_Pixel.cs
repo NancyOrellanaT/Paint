@@ -13,6 +13,7 @@ namespace Paint
         public static int altoPixel = 30;
         public static int coordenadaInicioX = 0;
         public static int coordenadaInicioY = 0;
+        public static int tamañoBorde = 2;
         public static Color colorFondo = Color.White;
         public static Color colorBorde = Color.Black;
     }
