@@ -12,6 +12,11 @@ namespace Paint
     {
         Pixel[,] pixeles;
 
+        List<Point> puntos;
+        List<Figura> figuras;
+
+        Point punto;
+
         int filas;
         int columnas;
 
@@ -32,6 +37,9 @@ namespace Paint
                 Propiedades_Pixel.coordenadaInicioX = 0;
                 Propiedades_Pixel.coordenadaInicioY += Propiedades_Pixel.altoPixel;
             }
+
+            puntos = new List<Point>();
+            figuras = new List<Figura>();
         }
 
         public void DibujarCuadricula(PaintEventArgs e)
@@ -163,16 +171,35 @@ namespace Paint
 
             pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Propiedades_Pixel.colorFondo);
 
+            //Se crea un nuevo punto para poder añadirlo en la lista de puntos
+            punto = new Point(Convert.ToInt32(y), Convert.ToInt32(x));
+            puntos.Add(punto);
+
             for (int k = 0; k < pasos; k++)
             {
                 x += xIncremento;
                 y += yIncremento;
                 pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Propiedades_Pixel.colorFondo);
+                //Se crea un nuevo punto para poder añadirlo en la lista de puntos
+                punto = new Point(Convert.ToInt32(x), Convert.ToInt32(y));
+                puntos.Add(punto);
+
+                //Cuando se utilizan los corchetes sirve para hacer referencia a la posicion y poder mostrar o comparar algo en esa posicion, no se le puede atrabuir e esa manera
+                MessageBox.Show("puntos: " + puntos[k].ToString());
             }
+
+            //Se instancia la figura con todos los puntos guardados
+            figuras.Add(new Figura(puntos, pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].getColorFondo()));
+
+            //Los puntos que devuelve la figura estan en un system.collections
+            MessageBox.Show("Puntos: " + figuras[0].GetPuntos() + "Color: " + figuras[0].GetColorBorde().ToString() + "Cantidad de objetos generados: " + figuras.Count);
+            
         }
 
         public void LineaBresenham(int x, int y, int x2, int y2)
         {
+
+
             int w = x2 - x;
             int h = y2 - y;
             int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
@@ -295,7 +322,6 @@ namespace Paint
             catch (Exception e)
             {
                 Console.WriteLine("Indice fuera del rango");
-
             }               
         }
     
@@ -407,9 +433,8 @@ namespace Paint
             }
             catch (Exception e)
             {
-                
+                Console.WriteLine("Indice fuera del rango");
             }
-            
         }
     }
 }

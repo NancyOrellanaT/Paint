@@ -118,8 +118,8 @@ namespace Paint
             int dx2 = Math.Abs(Propiedades_Pixel.altoPixel * puntos[2].X - Propiedades_Pixel.anchoPixel * puntos[0].X);
             int dy1 = Math.Abs(Propiedades_Pixel.altoPixel * puntos[1].Y - Propiedades_Pixel.anchoPixel * puntos[0].Y);
             int dy2 = Math.Abs(Propiedades_Pixel.altoPixel * puntos[2].Y - Propiedades_Pixel.anchoPixel * puntos[0].Y);
-            int ancho = (int) Math.Ceiling(Math.Sqrt(Math.Pow(dx1, 2) - Math.Pow(dy1, 2))) / 20;
-            int alto = (int) Math.Ceiling(Math.Sqrt(Math.Abs(Math.Pow(dx2, 2) - Math.Pow(dy2, 2)))) / 20;
+            int ancho = (int) Math.Ceiling(Math.Sqrt(Math.Pow(dx1, 2) - Math.Pow(dy1, 2))) / Propiedades_Pixel.anchoPixel;
+            int alto = (int) Math.Ceiling(Math.Sqrt(Math.Abs(Math.Pow(dx2, 2) - Math.Pow(dy2, 2)))) /  Propiedades_Pixel.altoPixel;
 
             lienzo.Elipse(puntos[0].X, puntos[0].Y, ancho, alto);
             panel1.Refresh();
