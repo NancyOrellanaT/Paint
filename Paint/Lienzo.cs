@@ -12,19 +12,22 @@ namespace Paint
     {
         Pixel[,] pixeles;
 
-        List<Point> puntos;
         List<Figura> figuras;
+        List<Point> figuraSeleccionada;
 
         Point punto;
 
         int filas;
         int columnas;
 
-        public Lienzo(int filas, int columnas) {
+        Color colorFigura;
+
+        public Lienzo(int filas, int columnas)
+        {
 
             this.filas = filas;
             this.columnas = columnas;
-          
+
             pixeles = new Pixel[filas, columnas];
 
             for (int i = 0; i < filas; i++)
@@ -38,8 +41,9 @@ namespace Paint
                 Propiedades_Pixel.coordenadaInicioY += Propiedades_Pixel.altoPixel;
             }
 
-            puntos = new List<Point>();
             figuras = new List<Figura>();
+            figuraSeleccionada = new List<Point>();
+
         }
 
         public void DibujarCuadricula(PaintEventArgs e)
@@ -97,7 +101,7 @@ namespace Paint
                     }
                     Propiedades_Pixel.coordenadaInicioX = 0;
                     Propiedades_Pixel.coordenadaInicioY += Propiedades_Pixel.altoPixel;
-                }    
+                }
             }
             else
             {
@@ -154,6 +158,9 @@ namespace Paint
         //Algoritmos-------------------------------------------------------------------------------
         public void LineaDDA(int x1, int y1, int x2, int y2)
         {
+            Color colorFondo = Propiedades_Pixel.colorFondo;
+            List<Point> puntos = new List<Point>();
+
             int dx = x2 - x1, dy = y2 - y1, pasos;
             float xIncremento, yIncremento, x = x1, y = y1;
 
@@ -172,8 +179,7 @@ namespace Paint
             pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Propiedades_Pixel.colorFondo);
 
             //Se crea un nuevo punto para poder añadirlo en la lista de puntos
-            punto = new Point(Convert.ToInt32(y), Convert.ToInt32(x));
-            puntos.Add(punto);
+            puntos.Add(new Point(Convert.ToInt32(x), Convert.ToInt32(y)));
 
             for (int k = 0; k < pasos; k++)
             {
@@ -181,24 +187,18 @@ namespace Paint
                 y += yIncremento;
                 pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].setColorFondo(Propiedades_Pixel.colorFondo);
                 //Se crea un nuevo punto para poder añadirlo en la lista de puntos
-                punto = new Point(Convert.ToInt32(x), Convert.ToInt32(y));
-                puntos.Add(punto);
-
-                //Cuando se utilizan los corchetes sirve para hacer referencia a la posicion y poder mostrar o comparar algo en esa posicion, no se le puede atrabuir e esa manera
-                MessageBox.Show("puntos: " + puntos[k].ToString());
+                puntos.Add(new Point(Convert.ToInt32(x), Convert.ToInt32(y)));
             }
 
             //Se instancia la figura con todos los puntos guardados
-            figuras.Add(new Figura(puntos, pixeles[Convert.ToInt32(y), Convert.ToInt32(x)].getColorFondo()));
+            figuras.Add(new Figura(puntos, colorFondo, "Linea"));
 
-            //Los puntos que devuelve la figura estan en un system.collections
-            MessageBox.Show("Puntos: " + figuras[0].GetPuntos() + "Color: " + figuras[0].GetColorBorde().ToString() + "Cantidad de objetos generados: " + figuras.Count);
-            
         }
 
         public void LineaBresenham(int x, int y, int x2, int y2)
         {
-
+            Color colorFondo = Propiedades_Pixel.colorFondo;
+            List<Point> puntos = new List<Point>();
 
             int w = x2 - x;
             int h = y2 - y;
@@ -208,6 +208,7 @@ namespace Paint
             if (w < 0) dx2 = -1; else if (w > 0) dx2 = 1;
             int longest = Math.Abs(w);
             int shortest = Math.Abs(h);
+
             if (!(longest > shortest))
             {
                 longest = Math.Abs(h);
@@ -215,10 +216,13 @@ namespace Paint
                 if (h < 0) dy2 = -1; else if (h > 0) dy2 = 1;
                 dx2 = 0;
             }
+
             int numerator = longest >> 1;
             for (int i = 0; i <= longest; i++)
             {
                 pixeles[y, x].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntos.Add(punto = new Point(Convert.ToInt32(x), Convert.ToInt32(y)));
+                //MessageBox.Show("puntos: " + puntos[i].ToString());
                 numerator += shortest;
                 if (!(numerator < longest))
                 {
@@ -232,52 +236,68 @@ namespace Paint
                     y += dy2;
                 }
             }
+
+            figuras.Add(new Figura(puntos, colorFondo, "Linea"));
         }
 
         public void Circulo(int xCentro, int yCentro, int xRadio, int yRadio)
         {
+            Color colorFondo = Propiedades_Pixel.colorFondo;
+
+            List<Point> listaPuntos = new List<Point>();
+
             int x = 0;
-            double distancia = Math.Sqrt(Math.Pow((xRadio - xCentro),2) + Math.Pow((yRadio - yCentro),2));
+            double distancia = Math.Sqrt(Math.Pow((xRadio - xCentro), 2) + Math.Pow((yRadio - yCentro), 2));
             int radio = Convert.ToInt32(distancia);
             int y = radio;
             int p = 1 - radio;
 
-            PuntosCirculo(xCentro, yCentro, x, y);
+            PuntosCirculo(xCentro, yCentro, x, y, listaPuntos);
 
-         while (x < y)
+            while (x < y)
             {
                 x++;
                 if (p < 0)
                 {
                     p += 2 * x + 1;
-                } else
+                }
+                else
                 {
                     y--;
                     p += 2 * (x - y) + 1;
                 }
-                PuntosCirculo(xCentro, yCentro, x , y);
+                PuntosCirculo(xCentro, yCentro, x, y, listaPuntos);
             }
+
+            figuras.Add(new Figura(listaPuntos, colorFondo, "Circulo"));
+
         }
 
-        public void PuntosCirculo(int xCentro, int yCentro, int x, int y)
+        public void PuntosCirculo(int xCentro, int yCentro, int x, int y, List<Point> puntosCircunferencia)
         {
+
             try
             {
                 pixeles[yCentro + y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
-            } catch (Exception e)
+                puntosCircunferencia.Add(punto = new Point(xCentro + x, yCentro + y));
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("Indice fuera del rango");
             }
             try
             {
                 pixeles[yCentro + y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
-            } catch(Exception e)
+                puntosCircunferencia.Add(punto = new Point(xCentro - x, yCentro + y));
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("Indice fuera del rango");
             }
             try
             {
                 pixeles[yCentro - y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntosCircunferencia.Add(punto = new Point(xCentro + x, yCentro - y));
             }
             catch (Exception e)
             {
@@ -286,6 +306,7 @@ namespace Paint
             try
             {
                 pixeles[yCentro - y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntosCircunferencia.Add(punto = new Point(xCentro - x, yCentro - y));
             }
             catch (Exception e)
             {
@@ -294,6 +315,7 @@ namespace Paint
             try
             {
                 pixeles[yCentro + x, xCentro + y].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntosCircunferencia.Add(punto = new Point(xCentro + y, yCentro + x));
             }
             catch (Exception e)
             {
@@ -302,6 +324,7 @@ namespace Paint
             try
             {
                 pixeles[yCentro + x, xCentro - y].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntosCircunferencia.Add(punto = new Point(xCentro - y, yCentro + x));
             }
             catch (Exception e)
             {
@@ -310,6 +333,7 @@ namespace Paint
             try
             {
                 pixeles[yCentro - x, xCentro + y].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntosCircunferencia.Add(punto = new Point(xCentro + y, yCentro - x));
             }
             catch (Exception e)
             {
@@ -318,15 +342,20 @@ namespace Paint
             try
             {
                 pixeles[yCentro - x, xCentro - y].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntosCircunferencia.Add(punto = new Point(xCentro - y, yCentro - x));
             }
             catch (Exception e)
             {
                 Console.WriteLine("Indice fuera del rango");
-            }               
+            }
         }
-    
-        public void Elipse(int xCentro, int yCentro, int rX, int rY) {
- 
+
+        public void Elipse(int xCentro, int yCentro, int rX, int rY)
+        {
+            Color colorFondo = Propiedades_Pixel.colorFondo;
+
+            List<Point> listaPuntos = new List<Point>();
+
             int rX2 = rX * rX;
             int rY2 = rY * rY;
             int dosRx2 = 2 * rX2;
@@ -337,7 +366,7 @@ namespace Paint
             int px = 0;
             int py = dosRx2 * y;
 
-            ElipsePuntos(xCentro, yCentro, x, y);
+            ElipsePuntos(xCentro, yCentro, x, y, listaPuntos);
 
             p = Convert.ToInt32(Math.Round(rY2 - (rX2 * rY) + (0.25 * rX2)));
 
@@ -356,8 +385,8 @@ namespace Paint
                     py -= dosRx2;
                     p += rY2 + px - py;
                 }
-                
-                ElipsePuntos(xCentro, yCentro, x, y);
+
+                ElipsePuntos(xCentro, yCentro, x, y, listaPuntos);
             }
 
             //Region 2
@@ -376,22 +405,27 @@ namespace Paint
                     px += dosRy2;
                     p += rX2 - py + px;
                 }
-                ElipsePuntos(xCentro, yCentro, x, y);
+                ElipsePuntos(xCentro, yCentro, x, y, listaPuntos);
             }
+
+            figuras.Add(new Figura(listaPuntos, colorFondo, "Elipse"));
         }
 
-        private void ElipsePuntos(int xCentro, int yCentro, int x, int y)
+        private void ElipsePuntos(int xCentro, int yCentro, int x, int y, List<Point> puntosElipse)
         {
             try
             {
                 pixeles[yCentro + y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
-            } catch(Exception e)
+                puntosElipse.Add(punto = new Point(xCentro + x, yCentro + y));
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("Indice fuera del rango");
             }
             try
             {
                 pixeles[yCentro + y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntosElipse.Add(punto = new Point(xCentro - x, yCentro + y));
             }
             catch (Exception e)
             {
@@ -400,6 +434,7 @@ namespace Paint
             try
             {
                 pixeles[yCentro - y, xCentro + x].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntosElipse.Add(punto = new Point(xCentro + x, yCentro - y));
             }
             catch (Exception e)
             {
@@ -407,8 +442,8 @@ namespace Paint
             }
             try
             {
-                Console.WriteLine("Indice fuera del rango");
                 pixeles[yCentro - y, xCentro - x].setColorFondo(Propiedades_Pixel.colorFondo);
+                puntosElipse.Add(punto = new Point(xCentro - x, yCentro - y));
             }
             catch (Exception e)
             {
@@ -418,9 +453,10 @@ namespace Paint
 
         public void boundaryFill4(int x, int y, Color fill, Color boundary)
         {
-            try {
+            try
+            {
                 Color current = pixeles[y, x].getColorFondo();
-               
+
                 if ((current != boundary) && (current != fill))
                 {
                     Propiedades_Pixel.colorFondo = fill;
@@ -435,6 +471,188 @@ namespace Paint
             {
                 Console.WriteLine("Indice fuera del rango");
             }
+        }
+
+        public void ReconocimientoFigura(int x, int y)
+        {
+            Point puntoSeleccionado = new Point(x, y);
+
+            bool figuraEncontrada = false;
+
+            for (int i = figuras.Count - 1; i >= 0; i--)
+            {
+                for (int j = 0; j < figuras[i].GetPuntos().Count; j++)
+                {
+                    if (figuras[i].GetPuntos()[j].X == puntoSeleccionado.X && figuras[i].GetPuntos()[j].Y == puntoSeleccionado.Y)
+                    {
+                        figuraSeleccionada = figuras[i].GetPuntos();
+                        colorFigura = figuras[i].GetColor();
+                        figuraEncontrada = true;
+                        break;
+                    }
+                }
+                if (figuraEncontrada)
+                {
+                    break;
+                }
+            }
+        }
+
+        public void TraslaciónDerecha()
+        {
+            double operacion;
+
+            MetodoBurbujaDerecha(figuraSeleccionada);
+
+            for (int i = 0; i < figuraSeleccionada.Count; i++)
+            {
+                Point puntoAnterior = figuraSeleccionada[i];
+                Point puntoNuevo = figuraSeleccionada[i];
+                puntoNuevo.X = (puntoNuevo.X * Propiedades_Pixel.anchoPixel) + Propiedades_Pixel.anchoPixel;
+                operacion = puntoNuevo.X / Propiedades_Pixel.anchoPixel;
+                puntoNuevo.X = (int)Math.Floor(operacion);
+                figuraSeleccionada[i] = puntoNuevo;
+
+                pixeles[puntoAnterior.Y, puntoAnterior.X].setColorFondo(Color.White);
+                pixeles[figuraSeleccionada[i].Y, figuraSeleccionada[i].X].setColorFondo(colorFigura);
+            }
+        }
+
+        public void TraslaciónIzquierda()
+        {
+            double operacion;
+
+            MetodoBurbujaIzquierda(figuraSeleccionada);
+
+            for (int i = 0; i < figuraSeleccionada.Count; i++)
+            {
+                Point puntoAnterior = figuraSeleccionada[i];
+                Point puntoNuevo = figuraSeleccionada[i];
+                puntoNuevo.X = (puntoNuevo.X * Propiedades_Pixel.anchoPixel) - Propiedades_Pixel.anchoPixel;
+                operacion = puntoNuevo.X / Propiedades_Pixel.anchoPixel;
+                puntoNuevo.X = (int)Math.Floor(operacion);
+                figuraSeleccionada[i] = puntoNuevo;
+
+                if (puntoAnterior.X > 0)
+                {
+                    pixeles[puntoAnterior.Y, puntoAnterior.X].setColorFondo(Color.White);
+                    pixeles[figuraSeleccionada[i].Y, figuraSeleccionada[i].X].setColorFondo(colorFigura);
+
+                }
+            }
+        }
+
+        public void TraslaciónArriba()
+        {
+            double operacion;
+
+            MetodoBurbujaArriba(figuraSeleccionada);
+
+            for (int i = 0; i < figuraSeleccionada.Count; i++)
+            {
+                Point puntoAnterior = figuraSeleccionada[i];
+                Point puntoNuevo = figuraSeleccionada[i];
+                puntoNuevo.Y = (puntoNuevo.Y * Propiedades_Pixel.altoPixel) - Propiedades_Pixel.altoPixel;
+                operacion = puntoNuevo.Y / Propiedades_Pixel.altoPixel;
+                puntoNuevo.Y = (int)Math.Floor(operacion);
+                figuraSeleccionada[i] = puntoNuevo;
+
+                if (puntoAnterior.Y > 0)
+                {
+                    pixeles[puntoAnterior.Y, puntoAnterior.X].setColorFondo(Color.White);
+                    pixeles[figuraSeleccionada[i].Y, figuraSeleccionada[i].X].setColorFondo(colorFigura);
+
+                }
+            }
+        }
+
+        public void TraslaciónAbajo()
+        {
+            double operacion;
+
+            MetodoBurbujaAbajo(figuraSeleccionada);
+
+            for (int i = 0; i < figuraSeleccionada.Count; i++)
+            {
+                Point puntoAnterior = figuraSeleccionada[i];
+                Point puntoNuevo = figuraSeleccionada[i];
+                puntoNuevo.Y = (puntoNuevo.Y * Propiedades_Pixel.altoPixel) + Propiedades_Pixel.altoPixel;
+                operacion = puntoNuevo.Y / Propiedades_Pixel.anchoPixel;
+                puntoNuevo.Y = (int)Math.Floor(operacion);
+                figuraSeleccionada[i] = puntoNuevo;
+
+                if (puntoAnterior.X >= 0 && puntoAnterior.Y >= 0)
+                {
+                    pixeles[puntoAnterior.Y, puntoAnterior.X].setColorFondo(Color.White);
+                    pixeles[figuraSeleccionada[i].Y, figuraSeleccionada[i].X].setColorFondo(colorFigura);
+
+                }
+            }
+        }
+
+        public void MetodoBurbujaDerecha(List<Point> pixelesFigura)
+        {
+            Point t;
+            for (int a = 1; a < pixelesFigura.Count; a++)
+                for (int b = pixelesFigura.Count - 1; b >= a; b--)
+                {
+                    if (pixelesFigura[b - 1].X < pixelesFigura[b].X)
+                    {
+                        t = pixelesFigura[b - 1];
+                        pixelesFigura[b - 1] = pixelesFigura[b];
+                        pixelesFigura[b] = t;
+                    }
+                }
+        }
+
+        public void MetodoBurbujaIzquierda(List<Point> pixelesFigura)
+        {
+            Point t;
+            for (int a = 1; a < pixelesFigura.Count; a++)
+                for (int b = pixelesFigura.Count - 1; b >= a; b--)
+                {
+                    if (pixelesFigura[b - 1].X > pixelesFigura[b].X)
+                    {
+                        t = pixelesFigura[b - 1];
+                        pixelesFigura[b - 1] = pixelesFigura[b];
+                        pixelesFigura[b] = t;
+                    }
+                }
+        }
+
+        public void MetodoBurbujaArriba(List<Point> pixelesFigura)
+        {
+            Point t;
+            for (int a = 1; a < pixelesFigura.Count; a++)
+                for (int b = pixelesFigura.Count - 1; b >= a; b--)
+                {
+                    if (pixelesFigura[b - 1].Y > pixelesFigura[b].Y)
+                    {
+                        t = pixelesFigura[b - 1];
+                        pixelesFigura[b - 1] = pixelesFigura[b];
+                        pixelesFigura[b] = t;
+                    }
+                }
+        }
+
+        public void MetodoBurbujaAbajo(List<Point> pixelesFigura)
+        {
+            Point t;
+            for (int a = 1; a < pixelesFigura.Count; a++)
+                for (int b = pixelesFigura.Count - 1; b >= a; b--)
+                {
+                    if (pixelesFigura[b - 1].Y < pixelesFigura[b].Y)
+                    {
+                        t = pixelesFigura[b - 1];
+                        pixelesFigura[b - 1] = pixelesFigura[b];
+                        pixelesFigura[b] = t;
+                    }
+                }
+        }
+
+        public void Rotacion()
+        {
+
         }
     }
 }

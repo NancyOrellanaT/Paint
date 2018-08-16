@@ -11,12 +11,15 @@ namespace Paint
     {
         List<Point> puntos;
 
-        Color colorBorde;
+        Color color;
 
-        public Figura(List<Point> puntosFigura, Color color)
+        String nombreFigura;
+
+        public Figura(List<Point> puntosFigura, Color color, String nombreFigura)
         {
             this.puntos = puntosFigura;
-            this.colorBorde = color;
+            this.color = color;
+            this.nombreFigura = nombreFigura;
         }
 
         public List<Point> GetPuntos()
@@ -24,9 +27,14 @@ namespace Paint
             return this.puntos;
         }
 
-        public Color GetColorBorde()
+        public Color GetColor()
         {
-            return this.colorBorde;
+            return this.color;
+        }
+
+        public String GetNombre()
+        {
+            return this.nombreFigura;
         }
     }
 }

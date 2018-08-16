@@ -208,8 +208,41 @@ namespace Paint
             {
                 puntos[i].X = 0;
                 puntos[i].Y = 0;
-            }
-            
+            }    
+        }
+
+        private void btnTraslacion_Click(object sender, EventArgs e)
+        {
+            lienzo.ReconocimientoFigura(puntos[0].X , puntos[0].Y);
+        }
+
+        private void btnDerecha_Click(object sender, EventArgs e)
+        {
+            lienzo.TraslaciónDerecha();
+            panel1.Refresh();
+        }
+
+        private void btnIzquierda_Click(object sender, EventArgs e)
+        {
+            lienzo.TraslaciónIzquierda();
+            panel1.Refresh();
+        }
+
+        private void btnAbajo_Click(object sender, EventArgs e)
+        {
+            lienzo.TraslaciónAbajo();
+            panel1.Refresh();
+        }
+
+        private void btnArriba_Click(object sender, EventArgs e)
+        {
+            lienzo.TraslaciónArriba();
+            panel1.Refresh();
+        }
+
+        private void btnRotacion_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
