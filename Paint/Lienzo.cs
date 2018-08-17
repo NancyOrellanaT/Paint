@@ -650,9 +650,28 @@ namespace Paint
                 }
         }
 
-        public void Rotacion()
+        public void Rotacion(int xCentro, int yCentro, double angulo)
         {
 
+            for (int i = 0; i < figuraSeleccionada.Count; i++)
+            {
+                Point puntoInicial = figuraSeleccionada[i];
+                puntoInicial.X = puntoInicial.X;
+                puntoInicial.Y = puntoInicial.Y;
+                Point puntosRotacion = new Point(0,0);
+                puntosRotacion.X = (int) Math.Floor(((Math.Cos(angulo) * (puntoInicial.X - xCentro)) - (Math.Sin(angulo) * (puntoInicial.Y - yCentro)) + xCentro));
+                puntosRotacion.Y = (int)(Math.Floor((Math.Sin(angulo) * (puntoInicial.X - xCentro)) + (Math.Cos(angulo) * (puntoInicial.Y - yCentro)) + yCentro));
+                figuraSeleccionada[i] = puntosRotacion;
+                try
+                {
+                    pixeles[puntoInicial.Y, puntoInicial.X].setColorFondo(Color.White);
+                    pixeles[puntosRotacion.Y, puntosRotacion.X].setColorFondo(colorFigura);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
         }
     }
 }

@@ -139,7 +139,7 @@ namespace Paint
 
         private void btnRellenar_Click(object sender, EventArgs e)
         {
-            lienzo.boundaryFill4(puntos[0].X, puntos[0].Y, Propiedades_Pixel.colorFondo, Color.Red);
+            lienzo.boundaryFill4(puntos[0].X, puntos[0].Y, Propiedades_Pixel.colorFondo, Color.Black);
             panel1.Refresh();
         }
 
@@ -242,7 +242,10 @@ namespace Paint
 
         private void btnRotacion_Click(object sender, EventArgs e)
         {
+            double angulo = Math.PI / 2;
 
+            lienzo.Rotacion(puntos[1].X, puntos[1].Y, angulo);
+            panel1.Refresh();
         }
     }
 }
