@@ -66,7 +66,14 @@ namespace Paint
 
         public void setColorFondo(Color color)
         {
-            this.pincel.Color = color;
+            try
+            {
+                this.pincel.Color = color;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Indice muy grande");
+            }
         } 
 
         public void setColorBorde(Color color)

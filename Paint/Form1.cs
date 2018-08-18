@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Paint
 {
-    public partial class Form1 : Form
+    public partial class Formulario : Form
     {
         int filas;
         int columnas;
@@ -20,18 +20,18 @@ namespace Paint
 
         Lienzo lienzo;
 
-        public Form1()
+        public Formulario()
         {
             InitializeComponent();
             this.contador = 0;
-            this.filas = panel1.Width;
-            this.columnas = panel1.Height;
+            this.filas = panelPrincipal.Width;
+            this.columnas = panelPrincipal.Height;
 
             this.puntos = new Point[3];
 
             this.lienzo = new Lienzo(filas, columnas);
 
-            this.panel1.MouseClick += new MouseEventHandler(panel1_MouseDown1);
+            this.panelPrincipal.MouseClick += new MouseEventHandler(panel1_MouseDown1);
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -42,13 +42,13 @@ namespace Paint
         private void btnMaximizar_Click(object sender, EventArgs e)
         {
             lienzo.MaximizarCuadricula();
-            panel1.Refresh();
+            panelPrincipal.Refresh();
         }
 
         private void btnMinizar_Click(object sender, EventArgs e)
         {
             lienzo.MinimizarCuadricula();
-            panel1.Refresh();
+            panelPrincipal.Refresh();
         }
 
         private void panel1_MouseDown1(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -71,18 +71,18 @@ namespace Paint
 
                 if (contador == 0)
                 {
-                    txtX1.Text = Convert.ToString(puntos[0].X * Propiedades_Pixel.anchoPixel);
-                    txtY1.Text = Convert.ToString(puntos[0].Y * Propiedades_Pixel.altoPixel);
+                    txtX1.Text = Convert.ToString(puntos[0].X);
+                    txtY1.Text = Convert.ToString(puntos[0].Y);
                 }
                 if (contador == 1)
                 {
-                    txtX2.Text = Convert.ToString(puntos[1].X * Propiedades_Pixel.anchoPixel);
-                    txtY2.Text = Convert.ToString(puntos[1].Y * Propiedades_Pixel.altoPixel);
+                    txtX2.Text = Convert.ToString(puntos[1].X);
+                    txtY2.Text = Convert.ToString(puntos[1].Y);
                 }
                 else
                 {
-                    txtAncho.Text = Convert.ToString(puntos[2].X * Propiedades_Pixel.anchoPixel);
-                    txtAlto.Text = Convert.ToString(puntos[2].Y * Propiedades_Pixel.altoPixel);
+                    txtAncho.Text = Convert.ToString(puntos[2].X);
+                    txtAlto.Text = Convert.ToString(puntos[2].Y);
                 }
             }
 
@@ -97,19 +97,22 @@ namespace Paint
         private void btnDDA_Click(object sender, EventArgs e)
         {
             lienzo.LineaDDA(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
-            panel1.Refresh();
+            panelPrincipal.Refresh();
+            btnLimpiarCoordenadas_Click(sender, e);
         }
 
         private void btnBresemham_Click(object sender, EventArgs e)
         {
             lienzo.LineaBresenham(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
-            panel1.Refresh();
+            panelPrincipal.Refresh();
+            btnLimpiarCoordenadas_Click(sender, e);
         }
 
         private void btnCirculo_Click(object sender, EventArgs e)
         {
             lienzo.Circulo(puntos[0].X, puntos[0].Y, puntos[1].X, puntos[1].Y);
-            panel1.Refresh();
+            panelPrincipal.Refresh();
+            btnLimpiarCoordenadas_Click(sender, e);
         }
 
         private void btnElipse_Click(object sender, EventArgs e)
@@ -122,25 +125,32 @@ namespace Paint
             int alto = (int) Math.Ceiling(Math.Sqrt(Math.Abs(Math.Pow(dx2, 2) - Math.Pow(dy2, 2)))) /  Propiedades_Pixel.altoPixel;
 
             lienzo.Elipse(puntos[0].X, puntos[0].Y, ancho, alto);
-            panel1.Refresh();
+            panelPrincipal.Refresh();
+            btnLimpiarCoordenadas_Click(sender, e);
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             lienzo.LimpiarLienzo();
-            panel1.Refresh();
+            panelPrincipal.Refresh();
+            btnLimpiarCoordenadas_Click(sender, e);
+            lienzo.BorrarObjetos();
+            labelCoordenadaX.Text = "";
+            labelCoordenadaY.Text = "";
         }
 
         private void BtnEncendidoApagado_Click(object sender, EventArgs e)
         {
             lienzo.EncendidoApagadoCuadricula();
-            panel1.Refresh();
+            panelPrincipal.Refresh();
+            btnLimpiarCoordenadas_Click(sender, e);
         }
 
         private void btnRellenar_Click(object sender, EventArgs e)
         {
-            lienzo.boundaryFill4(puntos[0].X, puntos[0].Y, Propiedades_Pixel.colorFondo, Color.Black);
-            panel1.Refresh();
+            lienzo.boundaryFill4(puntos[0].X, puntos[0].Y, Propiedades_Pixel.colorFondo, lienzo.ColorPixel(puntos[0].X, puntos[0].Y));
+            panelPrincipal.Refresh();
+            btnLimpiarCoordenadas_Click(sender, e);
         }
 
         private void btnCafe_Click(object sender, EventArgs e)
@@ -193,6 +203,48 @@ namespace Paint
             Propiedades_Pixel.colorFondo = btnNegro.BackColor;
         }
 
+        private void btnTraslacion_Click(object sender, EventArgs e)
+        {
+            lienzo.ReconocimientoFigura(puntos[0].X , puntos[0].Y);
+        }
+
+        private void btnDerecha_Click(object sender, EventArgs e)
+        {
+            lienzo.TraslaciónDerecha();
+            lienzo.ActualizarColores();
+            panelPrincipal.Refresh();
+        }
+
+        private void btnIzquierda_Click(object sender, EventArgs e)
+        {
+            lienzo.TraslaciónIzquierda();
+            lienzo.ActualizarColores();
+            panelPrincipal.Refresh();
+        }
+
+        private void btnAbajo_Click(object sender, EventArgs e)
+        {
+            lienzo.TraslaciónAbajo();
+            lienzo.ActualizarColores();
+            panelPrincipal.Refresh();
+        }
+
+        private void btnArriba_Click(object sender, EventArgs e)
+        {
+            lienzo.TraslaciónArriba();
+            lienzo.ActualizarColores();
+            panelPrincipal.Refresh();
+        }
+
+        private void btnRotacion_Click(object sender, EventArgs e)
+        {
+            double angulo = Math.PI / 2;
+
+            lienzo.Rotacion(puntos[1].X, puntos[1].Y, angulo);
+            lienzo.ActualizarColores();
+            panelPrincipal.Refresh();
+        }
+
         private void btnLimpiarCoordenadas_Click(object sender, EventArgs e)
         {
             txtX1.Text = "0";
@@ -208,44 +260,7 @@ namespace Paint
             {
                 puntos[i].X = 0;
                 puntos[i].Y = 0;
-            }    
-        }
-
-        private void btnTraslacion_Click(object sender, EventArgs e)
-        {
-            lienzo.ReconocimientoFigura(puntos[0].X , puntos[0].Y);
-        }
-
-        private void btnDerecha_Click(object sender, EventArgs e)
-        {
-            lienzo.TraslaciónDerecha();
-            panel1.Refresh();
-        }
-
-        private void btnIzquierda_Click(object sender, EventArgs e)
-        {
-            lienzo.TraslaciónIzquierda();
-            panel1.Refresh();
-        }
-
-        private void btnAbajo_Click(object sender, EventArgs e)
-        {
-            lienzo.TraslaciónAbajo();
-            panel1.Refresh();
-        }
-
-        private void btnArriba_Click(object sender, EventArgs e)
-        {
-            lienzo.TraslaciónArriba();
-            panel1.Refresh();
-        }
-
-        private void btnRotacion_Click(object sender, EventArgs e)
-        {
-            double angulo = Math.PI / 2;
-
-            lienzo.Rotacion(puntos[1].X, puntos[1].Y, angulo);
-            panel1.Refresh();
+            }
         }
     }
 }

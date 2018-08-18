@@ -1,6 +1,6 @@
 ﻿namespace Paint
 {
-    partial class Form1
+    partial class Formulario
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.panel1 = new System.Windows.Forms.Panel();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Formulario));
+            this.panelPrincipal = new System.Windows.Forms.Panel();
             this.btnDDA = new System.Windows.Forms.Button();
             this.btnMaximizar = new System.Windows.Forms.Button();
             this.btnMinizar = new System.Windows.Forms.Button();
@@ -80,18 +80,18 @@
             this.btnRotacion = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // panel1
+            // panelPrincipal
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelPrincipal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(984, 953);
-            this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.panelPrincipal.BackColor = System.Drawing.Color.White;
+            this.panelPrincipal.Location = new System.Drawing.Point(0, 0);
+            this.panelPrincipal.Margin = new System.Windows.Forms.Padding(0);
+            this.panelPrincipal.Name = "panelPrincipal";
+            this.panelPrincipal.Size = new System.Drawing.Size(984, 953);
+            this.panelPrincipal.TabIndex = 0;
+            this.panelPrincipal.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // btnDDA
             // 
@@ -187,6 +187,7 @@
             this.txtX1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtX1.Location = new System.Drawing.Point(1207, 303);
             this.txtX1.Name = "txtX1";
+            this.txtX1.ReadOnly = true;
             this.txtX1.Size = new System.Drawing.Size(69, 22);
             this.txtX1.TabIndex = 9;
             this.txtX1.Text = "0";
@@ -197,6 +198,7 @@
             this.txtY1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtY1.Location = new System.Drawing.Point(1341, 303);
             this.txtY1.Name = "txtY1";
+            this.txtY1.ReadOnly = true;
             this.txtY1.Size = new System.Drawing.Size(69, 22);
             this.txtY1.TabIndex = 10;
             this.txtY1.Text = "0";
@@ -207,6 +209,7 @@
             this.txtY2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtY2.Location = new System.Drawing.Point(1341, 331);
             this.txtY2.Name = "txtY2";
+            this.txtY2.ReadOnly = true;
             this.txtY2.Size = new System.Drawing.Size(69, 22);
             this.txtY2.TabIndex = 14;
             this.txtY2.Text = "0";
@@ -217,6 +220,7 @@
             this.txtX2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtX2.Location = new System.Drawing.Point(1207, 331);
             this.txtX2.Name = "txtX2";
+            this.txtX2.ReadOnly = true;
             this.txtX2.Size = new System.Drawing.Size(69, 22);
             this.txtX2.TabIndex = 13;
             this.txtX2.Text = "0";
@@ -500,6 +504,7 @@
             this.txtAncho.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAncho.Location = new System.Drawing.Point(1207, 359);
             this.txtAncho.Name = "txtAncho";
+            this.txtAncho.ReadOnly = true;
             this.txtAncho.Size = new System.Drawing.Size(69, 22);
             this.txtAncho.TabIndex = 38;
             this.txtAncho.Text = "0";
@@ -510,6 +515,7 @@
             this.txtAlto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAlto.Location = new System.Drawing.Point(1341, 359);
             this.txtAlto.Name = "txtAlto";
+            this.txtAlto.ReadOnly = true;
             this.txtAlto.Size = new System.Drawing.Size(69, 22);
             this.txtAlto.TabIndex = 39;
             this.txtAlto.Text = "0";
@@ -631,7 +637,7 @@
             this.btnRotacion.UseVisualStyleBackColor = true;
             this.btnRotacion.Click += new System.EventHandler(this.btnRotacion_Click);
             // 
-            // Form1
+            // Formulario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -673,7 +679,7 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtY2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelPrincipal);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtX2);
             this.Controls.Add(this.txtY1);
@@ -689,7 +695,7 @@
             this.Controls.Add(this.label2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "Formulario";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Paint";
             this.ResumeLayout(false);
@@ -699,7 +705,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelPrincipal;
         private System.Windows.Forms.Button btnDDA;
         private System.Windows.Forms.Button btnMaximizar;
         private System.Windows.Forms.Button btnMinizar;
